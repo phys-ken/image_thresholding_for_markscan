@@ -15,3 +15,5 @@
 * [Python tkinter / リアルタイム2値化アプリを作ってみた](https://torimakujoukyou.com/tkinter-binarization-gui/)
   * こちらのサイトで紹介されているスクリプトを、日本語対応・複数ファイル対応させて、pyinstallerでexe化しました。
 * [Python OpenCV で日本語を含むパス及びファイルが読み取れない問題](https://qiita.com/amaguri0408/items/d4167a6e81e4f9866a71)
+
+[TOPへ戻る](https://phys-ken.github.io/phys-ken/)
