@@ -3,7 +3,7 @@
 * このソフトでは、しきい値にたいする二値化の様子をリアルタイムで見ながら画像を二値化していくことができます。
 * 二値化するファイルは、複数選択可能です、ファイル選択の画面で複数選択してください。変換先の画像ファイルは、ソフトと同じ場所に保存されます。
 
-![使用中の画面](./figs/thumb.gif.gif)
+![使用中の画面](./figs/thumb.gif)
 
 ## 使い方
 * [リリースのページ](https://github.com/phys-ken/image_thresholding_for_markscan/releases/tag/0.1)から最新版の**markscan_bw.exe**をダウンロードしてください。
