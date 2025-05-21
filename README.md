@@ -19,3 +19,33 @@
 * [Python OpenCV で日本語を含むパス及びファイルが読み取れない問題](https://qiita.com/amaguri0408/items/d4167a6e81e4f9866a71)
 
 [TOPへ戻る](https://phys-ken.github.io/phys-ken/)
+
+## 開発者向け情報
+
+### 開発環境のセットアップ
+1. Pythonをインストールします（3.8以上推奨）
+2. 仮想環境を作成してアクティベートします：
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+3. 必要なライブラリをインストールします：
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+### ビルド方法
+ビルドスクリプトを使用して簡単に実行可能ファイルを作成できます：
+```powershell
+.\build.ps1
+```
+
+これにより以下の処理が実行されます：
+- requirements.txtの更新
+- ライセンス情報の生成 (LICENSES.md)
+- PyInstallerによる実行可能ファイルのビルド
+
+実行可能ファイルは`dist`フォルダに生成されます。
+
+### ライセンス情報
+使用しているライブラリのライセンス情報は[LICENSES.md](./LICENSES.md)を参照してください。

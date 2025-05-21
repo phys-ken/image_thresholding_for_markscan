@@ -1,5 +1,5 @@
 /build
-/dist
 /markscan_bw.spec
 /__pycache__
 .DS_Store
+/venv
