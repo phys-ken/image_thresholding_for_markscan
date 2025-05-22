@@ -3,6 +3,7 @@ from fileinput import filename
 from posixpath import basename
 import tkinter as tk
 import tkinter.filedialog
+import tkinter.messagebox as messagebox
 import cv2
 from PIL import Image, ImageTk
 import os
@@ -48,12 +49,17 @@ def getfile():
     global image_bgr
     global f_paths
     f_paths = tk.filedialog.askopenfilenames(title="ファイル選択", initialdir="ディレクトリを入力", filetypes=[("Image file", ".png .jpg .jpeg")])
+    if not f_paths:  # ファイル選択がキャンセルされた場合
+        return
     str_file_path = str(f_paths[0])
     #OpenCVで画像を読み込む
     img = imread(str_file_path)
     image_bgr = resize(img)
     image_tk = format(image_bgr)
+    canvas.delete("all")  # 既存の画像をクリア
     canvas.create_image(0, 0, image=image_tk, anchor=tk.NW)
+    # スクロール領域を更新
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 #2値化関数    
 def scale(event=None):
@@ -64,14 +70,20 @@ def scale(event=None):
     ret, image_th = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
     image_bgr = resize(image_th)
     image_tk = format(image_bgr)
+    canvas.delete("all")  # 既存の画像をクリア
     canvas.create_image(0, 0, image=image_tk, anchor=tk.NW)
+    # スクロール領域を更新
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 #オリジナル画像表示
 def org():
     global image_tk
     image_bgr = resize(img)
     image_tk = format(image_bgr)
+    canvas.delete("all")  # 既存の画像をクリア
     canvas.create_image(0, 0, image=image_tk, anchor=tk.NW)
+    # スクロール領域を更新
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 #画像保存    
 def save():
@@ -91,11 +103,16 @@ def save():
             return False
 
     os.makedirs('bw_figs/', exist_ok=True)
+    saved_count = 0
     for f in f_paths:
         fileName = os.path.basename(str(f))
         _img = imread(str(f))
         ret, _image_th = cv2.threshold(_img, th, 255, cv2.THRESH_BINARY)
-        imwrite("bw_figs/bw_" + fileName, _image_th)
+        if imwrite("bw_figs/bw_" + fileName, _image_th):
+            saved_count += 1
+    
+    # 処理完了ダイアログを表示
+    messagebox.showinfo("処理完了", f"{saved_count}個の画像を保存しました。\n保存先: bw_figs/")
 
 #ウインドウの作成
 root = tk.Tk()
@@ -147,8 +164,20 @@ sc = tk.Scale(frame_scale, variable=val1, orient='horizontal',length=720, from_=
 sc.place(x=10, y=7)
 
 #キャンバス作成・配置
+# スクロール可能なキャンバスを作成
 canvas = tk.Canvas(frame_img, width=550, height=420)
 canvas.place(x=10, y=10)
+
+# スクロールバーの作成
+h_scrollbar = tk.Scrollbar(frame_img, orient=tk.HORIZONTAL, command=canvas.xview)
+h_scrollbar.place(x=10, y=430, width=550)
+
+v_scrollbar = tk.Scrollbar(frame_img, orient=tk.VERTICAL, command=canvas.yview)
+v_scrollbar.place(x=560, y=10, height=420)
+
+# スクロールバーとキャンバスを連動
+canvas.configure(xscrollcommand=h_scrollbar.set, yscrollcommand=v_scrollbar.set)
+canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
 
 #イベントループ
 root.mainloop()
